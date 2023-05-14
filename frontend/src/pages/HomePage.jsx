@@ -77,7 +77,7 @@ import { useSelector } from 'react-redux';
                 transform: 'translateY(-2px)',
                 boxShadow: 'lg',
               }}>
-              Details
+              Logout
             </Button>
           </Box>
         </Box>
