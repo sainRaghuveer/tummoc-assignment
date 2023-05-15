@@ -9,16 +9,37 @@ import {
     Stack,
     Button,
     useColorModeValue,
+    useToast,
   } from '@chakra-ui/react';
+import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
   
   export default function HomePage() {
+    const toast = useToast();
+    const navigate=useNavigate();
 
     const userLoggedData=useSelector((store)=>{
         return store.user
     });
 
-    const data=userLoggedData.email.split("@");
+    const handleLogout=()=>{
+      axios.post(`http://localhost:8800/logout`).then((res)=>{
+        console.log(res);
+        toast({
+          title: `${res.data.message}`,
+          status: "warning",
+          isClosable: true,
+          position:"top"
+        })
+        navigate("/")
+      }).catch((error)=>{
+        console.log(error);
+      })
+    }
+
+    const data=userLoggedData 
+    console.log(data)
 
     return (
       <Center py={6}>
@@ -53,21 +74,22 @@ import { useSelector } from 'react-redux';
           <Box p={6}>
             <Stack spacing={0} align={'center'} mb={5}>
               <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                {data[0]}
+                {data.email && data.email}
               </Heading>
-              <Text color={'gray.500'}>{userLoggedData.email}</Text>
+              <Text color={'gray.500'}>Raghu</Text>
             </Stack>
   
             <Stack direction={'row'} justify={'center'} spacing={6}>
               <Stack spacing={0} align={'center'}>
                 <Text fontWeight={600}>id</Text>
                 <Text fontSize={'sm'} color={'gray.500'}>
-                {userLoggedData._id}
+                {data.email && data._id}
                 </Text>
               </Stack>
             </Stack>
   
             <Button
+              onClick={handleLogout}
               w={'full'}
               mt={8}
               bg={useColorModeValue('#151f21', 'gray.900')}

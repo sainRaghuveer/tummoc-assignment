@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from '../Redux/Authentication/actions';
@@ -19,6 +19,8 @@ import {
     Toast,
     useToast,
 } from '@chakra-ui/react';
+import { FcGoogle } from "react-icons/fc";
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -27,6 +29,7 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const toast = useToast();
+    const [data, setData] = useState();
 
     const userData = useSelector((store) => {
         return store
@@ -52,19 +55,40 @@ const Login = () => {
         }
         dispatch(signup(userData, successToast, routeNavigate));
 
-        // dispatch(login(userData)).then(()=>{
-        //     navigate(location.state, {replace:true});
-        // });
     }
+
+    const handleGoogle = () => {
+        window.location.href = 'http://localhost:8800/auth/google';
+    }
+
+    const getData=()=>{
+        axios.get(`http://localhost:8800/auth/google/callback`).then((res) => {
+            // console.log("loginUserData", res)
+            data=res.data.profile
+            successToast(res.data, "success")
+        }).catch((error) => {
+            successToast(error.name, "error")
+            // console.log("error", error)
+        })
+    }
+
+    // useEffect(()=>{
+    //     getData();
+    //     if (window.location.search.includes('code')) {
+    //         getData();
+    //       }
+    // },[])
+    
 
     return (
         <div>
             <Flex
+                width={"100%"}
                 minH={'100vh'}
                 align={'center'}
                 justify={'center'}
                 bg={useColorModeValue('gray.50', 'gray.800')}>
-                <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+                <Stack spacing={8} mx={'auto'} width={"40%"} py={12} px={6}>
                     <Stack align={'center'}>
                         <Heading fontSize={'4xl'}>Register Here</Heading>
                     </Stack>
@@ -103,6 +127,11 @@ const Login = () => {
                             <Stack pt={6}>
                                 <Text align={'center'}>
                                     Already a user? <Button onClick={routeNavigate}><Link color={'blue.400'}>Login</Link></Button>
+                                </Text>
+                            </Stack>
+                            <Stack pt={6}>
+                                <Text align={'center'}>
+                                    Login with google <Button onClick={handleGoogle}><FcGoogle /></Button>
                                 </Text>
                             </Stack>
                         </Stack>

@@ -5,7 +5,7 @@ const ExtractJWT = require("passport-jwt").ExtractJwt;
 const JWTstrategy = require("passport-jwt").Strategy;
 
 
-
+//Signup middleware
 passport.use("signup", new localStrategy({ usernameField: 'email', passwordField: 'password' }, async (email, password, done) => {
     try {
         const alreadyUser = await UserModel.findOne({ email });
@@ -21,6 +21,7 @@ passport.use("signup", new localStrategy({ usernameField: 'email', passwordField
 )
 );
 
+//login middleware
 passport.use("login", new localStrategy({ usernameField: 'email', passwordField: 'password' }, async (email, password, done) => {
     try {
         const user = await UserModel.findOne({ email });
