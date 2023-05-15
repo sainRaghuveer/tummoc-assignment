@@ -42,6 +42,8 @@ import { useNavigate } from 'react-router-dom';
     console.log(data)
 
     return (
+      <div>
+        <Heading>Welcome to home page {data.email && data.email}</Heading>
       <Center py={6}>
         <Box
           maxW={'270px'}
@@ -50,6 +52,7 @@ import { useNavigate } from 'react-router-dom';
           boxShadow={'2xl'}
           rounded={'md'}
           overflow={'hidden'}>
+            
           <Image
             h={'120px'}
             w={'full'}
@@ -104,5 +107,6 @@ import { useNavigate } from 'react-router-dom';
           </Box>
         </Box>
       </Center>
+      </div>
     );
   }
